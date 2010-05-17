@@ -6,8 +6,8 @@ from content.models import ModelBase
 from options.models import Options
 
 # Content Models
-class Contributor(ModelBase):
-    profile = RichTextField(help_text='Full profile for this castmember.')
+class ShowContributor(ModelBase):
+    profile = RichTextField(help_text='Full profile for this contributor.')
     shows = models.ManyToManyField(
         'show.Show', 
         through='show.Credit',
@@ -15,25 +15,25 @@ class Contributor(ModelBase):
     )
 
     class Meta:
-        verbose_name = 'Contributor'
-        verbose_name_plural = 'Contributors'
+        verbose_name = 'Show Contributor'
+        verbose_name_plural = 'Show Contributors'
 
 class Credit(models.Model):
     contributor = models.ForeignKey(
-        'show.Contributor', 
+        'show.ShowContributor', 
         related_name='credits'
     )
     show = models.ForeignKey(
         'show.Show', 
         related_name='credits'
     )
-    role = models.CharField(
-        max_length=255, 
+    role = models.IntegerField(
         blank=True, 
-        null=True)
+        null=True,
+    )
 
     def __unicode__(self):
-        return "%s credit for %s" % (self.castmember.title, self.show.title)
+        return "%s credit for %s" % (self.contributor.title, self.show.title)
 
 class Show(ModelBase):
     content = RichTextField(
@@ -42,9 +42,29 @@ class Show(ModelBase):
         null=True,
     )
     contributor = models.ManyToManyField(
-        'show.Contributor', 
+        'show.ShowContributor', 
         through='show.Credit',
     )
+
+    def get_primary_contributors(self):
+        """
+        Returns a list of primary contributors, with primary being defined as those contributors that have the highest role assigned(in terms of priority).
+        """
+        primary_credits = []
+        credits = self.credits.all().order_by('role')
+        if credits:
+            primary_role = credits[0].role
+            for credit in credits:
+                if credit.role == primary_role:
+                    primary_credits.append(credit)
+
+        return [credit.contributor for credit in primary_credits]
+
+    def is_contributor_title_in_title(self, contributor):
+        """
+        Checks whether or not a contributors title is already present in the show's title.
+        """
+        return contributor.title.lower().lstrip().rstrip() in self.title.lower()
 
 class RadioShow(Show):
     pass
@@ -67,4 +87,5 @@ class CreditOption(models.Model):
     role_priority = models.IntegerField(
         blank=True,
         null=True,
+        help_text="The priority assigned to this role, with lower values being more importent.",
     )
