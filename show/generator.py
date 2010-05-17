@@ -7,11 +7,12 @@ from generate import IMAGES, VIDEOS
 from generate.json_loader import load_json
 
 SHOW_COUNT = 20
+CREDIT_COUNT = 20
 
 def generate():
     objects = []
 
-    # gen radio show objects and calendar entries
+    # create radio show objects and calendar entries
     for i in range(1, SHOW_COUNT + 1):
         # create show
         objects.append({
@@ -26,6 +27,28 @@ def generate():
                     "model": "sites.Site",
                     "fields": { 
                         "name": "example.com"
+                    }
+                },
+            },
+        })
+
+
+    # create some show credits
+    for i in range(1, CREDIT_COUNT + 1):
+        # create show
+        objects.append({
+            "model": "show.Credit",
+            "fields": {
+                "contributor": {
+                    "model": "show.ShowContributor",
+                    "fields": {
+                        "title": "Contributor %s Title" % i,
+                    }
+                },
+                "show": {
+                    "model": "show.RadioShow",
+                    "fields": {
+                        "title": "Radio Show %s Title" % random.randint(1, SHOW_COUNT)
                     }
                 },
             },
@@ -52,6 +75,7 @@ def generate():
                     "model": "cal.Calendar",
                     "fields": {
                         "title": "Calendar 1 Title",
+                        "state": "published",
                         "sites": {
                             "model": "sites.Site",
                             "fields": { 
