@@ -1,24 +1,26 @@
 from django.conf import settings
 from django.db import models
 
+from ckeditor.fields import RichTextField
 from content.models import ModelBase
 from options.models import Options
 
 # Content Models
-class CastMember(ModelBase):
-    profile = models.TextField(help_text='Full profile for this castmember.')
+class Contributor(ModelBase):
+    profile = RichTextField(help_text='Full profile for this castmember.')
     shows = models.ManyToManyField(
         'show.Show', 
-        through='show.Credit'
+        through='show.Credit',
+        related_name='show_contributors',
     )
 
     class Meta:
-        verbose_name = 'Cast Member'
-        verbose_name_plural = 'Cast Members'
+        verbose_name = 'Contributor'
+        verbose_name_plural = 'Contributors'
 
 class Credit(models.Model):
-    castmember = models.ForeignKey(
-        'show.CastMember', 
+    contributor = models.ForeignKey(
+        'show.Contributor', 
         related_name='credits'
     )
     show = models.ForeignKey(
@@ -34,14 +36,14 @@ class Credit(models.Model):
         return "%s credit for %s" % (self.castmember.title, self.show.title)
 
 class Show(ModelBase):
-    content = models.TextField(
+    content = RichTextField(
         help_text="Full article detailing this show.",
         blank=True,
         null=True,
     )
-    castmembers = models.ManyToManyField(
-        'show.CastMember', 
-        through='show.Credit'
+    contributor = models.ManyToManyField(
+        'show.Contributor', 
+        through='show.Credit',
     )
 
 class RadioShow(Show):
