@@ -1,0 +1,5 @@
+<div class="block">
+    <a href="{{ object.get_absolute_url }}"><img src="{{ object.get_radioshow_block_url }}" width="188" height="104" alt="" /><span></span></a>
+    <p><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></p>
+	<p class="meta">{{ entryitem.start|date:"H:i" }} - {{ entryitem.end|date:"H:i" }}</p>
+</div><!--/block-->

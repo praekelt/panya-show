@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load content_inclusion_tags show_inclusion_tags %} 
+
+{% block content %}
+	<div class="page section_shows_djs">
+	    <div class="title">
+		    <h1>{{ title }}</h1>
+		</div><!--/title-->
+
+        {% filter_menu filterset %}
+
+        {% radioshow_entryitem_listing object_list %}
+
+	</div><!--/page-->
+{% endblock %}
