@@ -48,17 +48,23 @@ class Show(ModelBase):
 
     def get_primary_contributors(self):
         """
-        Returns a list of primary contributors, with primary being defined as those contributors that have the highest role assigned(in terms of priority).
+        Returns a list of primary contributors, with primary being defined as those contributors that have the highest role assigned(in terms of priority). Only premitted contributors are returned.
         """
         primary_credits = []
-        credits = self.credits.all().order_by('role')
+        credits = self.credits.exclude(role=None).order_by('role')
         if credits:
             primary_role = credits[0].role
             for credit in credits:
                 if credit.role == primary_role:
                     primary_credits.append(credit)
 
-        return [credit.contributor for credit in primary_credits]
+        contributors = []
+        for credit in primary_credits:
+            contributor = credit.contributor
+            if contributor.is_permitted:
+                contributors.append(contributor)
+
+        return contributors
 
     def is_contributor_title_in_title(self, contributor):
         """
