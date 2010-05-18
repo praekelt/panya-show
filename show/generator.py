@@ -8,6 +8,7 @@ from generate.json_loader import load_json
 
 SHOW_COUNT = 20
 CREDIT_COUNT = 20
+CREDIT_OPTIONS = ((1, 'DJ'), (2, 'Newsreader'), )
 
 def generate():
     objects = []
@@ -32,6 +33,18 @@ def generate():
             },
         })
 
+    # create credit options
+    for option in CREDIT_OPTIONS:
+        objects.append({
+            "model": "show.CreditOption",
+            "fields": {
+                "show_options": {
+                    "model": "options.ShowOptions",
+                },
+                "role_name" : option[1],
+                "role_priority": option[0],
+            }
+        })
 
     # create some show credits
     for i in range(1, CREDIT_COUNT + 1):
@@ -39,10 +52,19 @@ def generate():
         objects.append({
             "model": "show.Credit",
             "fields": {
+                "role": random.randint(1, len(CREDIT_OPTIONS)),
                 "contributor": {
                     "model": "show.ShowContributor",
                     "fields": {
                         "title": "Contributor %s Title" % i,
+                        "state": "published",
+                        "image": random.sample(IMAGES, 1)[0],
+                        "sites": {
+                            "model": "sites.Site",
+                            "fields": { 
+                                "name": "example.com"
+                            }
+                        },
                     }
                 },
                 "show": {
