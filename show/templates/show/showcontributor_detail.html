@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load content_inclusion_tags pagemenu_inclusion_tags %} 
+
+{% block content %}
+	<div class="page section_shows_djs">
+		<div class="title">
+		    <h1><a href="javascript: void(0);">{{ title }}</a></h1>
+			<div class="dj_info">
+			    <img src="/media/radio2000/images/djs/dj_mug.jpg" width="190" height="107" alt="" />
+				<h2>On Air: Weekdays: 16:00 - 19:00</h2>
+				<h3>{{ contributor.title }}</h3>
+				<ul>
+				    <li><a href="http://www.facebook.com/" class="facebook"></a></li>
+					<li><a href="http://www.twitter.com/" class="twitter"></a></li>
+				</ul>
+			</div><!--/dj_info-->
+		</div><!--/title-->
+
+        {% pagemenu pagemenu %}
+
+        {% modelbase_listing object_list %}
+
+        {% pager page_obj %}
+
+	</div><!--/page-->
+{% endblock %}
