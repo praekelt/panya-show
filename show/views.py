@@ -1,4 +1,5 @@
 from cal.models import EntryItem
+from cal.pagemenus import EntriesByWeekdaysPageMenu
 from content.generic.views import GenericObjectList 
 from show.models import RadioShow
 
@@ -18,10 +19,10 @@ class RadioShowEntryItemList(GenericObjectList):
     def get_template_name(self):
         return 'show/radioshow_entryitem_list.html'
     
-    def get_filterset(self, request, queryset):
-        return None
+    def get_pagemenu(self, request, queryset):
+        return  EntriesByWeekdaysPageMenu(queryset=queryset, request=request)
     
     def get_queryset(self):
-        return EntryItem.permitted.by_model(RadioShow)#.this_week().order('start')
+        return EntryItem.permitted.by_model(RadioShow).order_by('start')
 
 radioshow_entryitem_list = RadioShowEntryItemList()
