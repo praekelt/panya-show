@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 
 from ckeditor.fields import RichTextField
@@ -17,6 +18,9 @@ class ShowContributor(ModelBase):
     class Meta:
         verbose_name = 'Show Contributor'
         verbose_name_plural = 'Show Contributors'
+
+    def get_absolute_url(self):
+        return reverse('showcontributor_detail', kwargs={'slug': self.slug})
 
 class Credit(models.Model):
     contributor = models.ForeignKey(
