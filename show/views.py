@@ -59,6 +59,9 @@ class ShowContributorContentList(GenericObjectList):
     
     def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
         return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
+    
+    def get_paginate_by(self):
+        return 7
 
     def get_queryset(self, slug):
         owner = ShowContributor.permitted.get(slug=slug).owner
@@ -85,10 +88,28 @@ class ShowContributorContentDetail(GenericObjectDetail):
     def get_template_name(self):
         return 'show/showcontributor_content_detail.html'
     
+    def get_contributor(self, slug):
+        return self.get_queryset().get(slug=slug).owner.modelbase_set.get(class_name='ShowContributor')
+
     def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
-        return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
+        return ShowContributorPageMenu(queryset=queryset, request=request, slug=self.get_contributor(slug).slug)
     
     def get_queryset(self, *args, **kwargs):
         return ModelBase.permitted.all()
+    
+    def get_extra_context(self, slug, *args, **kwargs):
+        extra_context = super(ShowContributorContentDetail, self).get_extra_context(*args, **kwargs)
+        added_context = {
+            'title': 'DJS & Shows',
+            'contributor': self.get_contributor(slug),
+        }
+        if extra_context:
+            extra_context.update(
+                added_context,
+            )
+        else:
+            extra_context = added_context
+
+        return extra_context
     
 showcontributor_content_detail =  ShowContributorContentDetail()
