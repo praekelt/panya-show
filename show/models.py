@@ -8,7 +8,11 @@ from options.models import Options
 
 # Content Models
 class ShowContributor(ModelBase):
-    profile = RichTextField(help_text='Full profile for this contributor.')
+    profile = RichTextField(
+        help_text='Full profile for this contributor.',
+        blank=True,
+        null=True,
+    )
     shows = models.ManyToManyField(
         'show.Show', 
         through='show.Credit',
@@ -16,11 +20,11 @@ class ShowContributor(ModelBase):
     )
 
     class Meta:
-        verbose_name = 'Show Contributor'
-        verbose_name_plural = 'Show Contributors'
+        verbose_name = 'Show contributor'
+        verbose_name_plural = 'Show contributors'
 
     def get_absolute_url(self):
-        return reverse('showcontributor_detail', kwargs={'slug': self.slug})
+        return reverse('showcontributor_content_list', kwargs={'slug': self.slug})
 
 class Credit(models.Model):
     contributor = models.ForeignKey(
