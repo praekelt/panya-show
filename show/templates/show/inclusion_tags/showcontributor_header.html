@@ -1,0 +1,11 @@
+<div class="dj_info">
+    <img src="{{ object.get_showcontributor_medium_url }}" width="190" height="107" alt="" />
+	<h2> </h2>{% comment %}<h2>On Air: Weekdays: 16:00 - 19:00</h2>{% endcomment %}
+	<h3>{{ object.title }}</h3>
+    {% with object.owner.profile as profile %}
+        <ul>
+	        {% if profile.facebook_url %}<li><a href="{{ profile.facebook_url }}" target="_blank" class="facebook"></a></li>{% endif %}
+		    {% if profile.twitter_url %}<li><a href="{{ profile.twitter_url }}" target="_blank" class="twitter"></a></li>{% endif %}
+		</ul>
+    {% endwith %}
+</div><!--/dj_info-->
