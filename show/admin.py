@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from content.admin import ModelBaseAdmin
 from options import options
-from show.models import Credit, CreditOption, RadioShow, ShowOptions
+from show.models import Credit, CreditOption, RadioShow, ShowContributor, ShowOptions
 
 class CreditOptionInline(admin.TabularInline):
     model = CreditOption
@@ -42,4 +42,5 @@ class RadioShowAdmin(ModelBaseAdmin):
     )
     
 admin.site.register(RadioShow, RadioShowAdmin)
+admin.site.register(ShowContributor, ModelBaseAdmin)
 admin.site.register(ShowOptions, ShowOptionsAdmin)
