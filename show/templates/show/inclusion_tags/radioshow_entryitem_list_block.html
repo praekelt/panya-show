@@ -1,7 +1,9 @@
 {% load content_template_tags %}
 
-<div class="block">
-    <a href="{% smart_url url_callable object %}"><img src="{% smart_url url_callable object %}" width="188" height="104" alt="" /><span></span></a>
-    <p><a href="{% smart_url url_callable object %}">{{ object.title }}</a></p>
-	<p class="meta">{{ entryitem.start|date:"H:i" }} - {{ entryitem.end|date:"H:i" }}</p>
-</div><!--/block-->
+{% with object.get_primary_contributors.0 as contributor %}
+    <div class="block">
+        <a href="{% smart_url url_callable contributor %}"><img src="{{ contributor.get_showcontributor_block_url }}" width="188" height="104" alt="" /><span></span></a>
+        <p><a href="{% smart_url url_callable contributor %}">{{ object.title }}</a></p>
+	    <p class="meta">{{ entryitem.start|date:"H:i" }} - {{ entryitem.end|date:"H:i" }}</p>
+    </div><!--/block-->
+{% endwith %}
