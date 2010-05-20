@@ -1,16 +1,15 @@
+from django.core.urlresolvers import reverse
+
 from cal.models import EntryItem
 from cal.pagemenus import EntriesByWeekdaysPageMenu
-from content.generic.views import GenericObjectList
+from content.generic.views import GenericObjectDetail, GenericObjectList
 from content.models import ModelBase
 from show.models import RadioShow, ShowContributor
+from show.pagemenus import ShowContributorPageMenu
 
-class RadioShowContributorURL(object):
+class ShowContributerContentURL(object):
     def __call__(self, obj):
-        contributors = obj.get_primary_contributors()
-        if contributors:
-            return contributors[0].get_absolute_url()
-        else:
-            ''
+        return reverse('showcontributor_content_detail', kwargs={'slug': obj.slug})
 
 class RadioShowEntryItemList(GenericObjectList):
     def get_extra_context(self, *args, **kwargs):
@@ -28,20 +27,17 @@ class RadioShowEntryItemList(GenericObjectList):
     def get_template_name(self):
         return 'show/radioshow_entryitem_list.html'
     
-    def get_pagemenu(self, request, queryset):
+    def get_pagemenu(self, request, queryset, *args, **kwargs):
         return  EntriesByWeekdaysPageMenu(queryset=queryset, request=request)
     
     def get_queryset(self):
         return EntryItem.permitted.by_model(RadioShow).order_by('start')
     
-    def get_url_callable(self):
-        return RadioShowContributorURL()
-
 radioshow_entryitem_list = RadioShowEntryItemList()
 
-class ShowContributorDetail(GenericObjectList):
+class ShowContributorContentList(GenericObjectList):
     def get_extra_context(self, slug, *args, **kwargs):
-        extra_context = super(ShowContributorDetail, self).get_extra_context(*args, **kwargs)
+        extra_context = super(ShowContributorContentList, self).get_extra_context(*args, **kwargs)
         added_context = {
             'title': 'DJS & Shows',
             'contributor': ShowContributor.permitted.get(slug=slug)
@@ -56,20 +52,43 @@ class ShowContributorDetail(GenericObjectList):
         return extra_context
    
     def get_template_name(self):
-        return 'show/showcontributor_detail.html'
+        return 'show/showcontributor_content_list.html'
     
-    def get_pagemenu(self, request, queryset):
-        return None
-        return  EntriesByWeekdaysPageMenu(queryset=queryset, request=request)
+    def get_url_callable(self):
+        return ShowContributerContentURL()
+    
+    def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
+        return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
 
     def get_queryset(self, slug):
         owner = ShowContributor.permitted.get(slug=slug).owner
         if owner:
-            return ModelBase.permitted.filter(owner=owner).order_by('created')
+            return ModelBase.permitted.filter(owner=owner).exclude(class_name__in=["ShowContributor",]).order_by('created')
         else:
             return ModelBase.permitted.exclude(owner=owner)
     
-    def get_url_callable(self):
-        return RadioShowContributorURL()
+showcontributor_content_list = ShowContributorContentList()
 
-showcontributor_detail = ShowContributorDetail()
+class ShowContributorDetail(GenericObjectDetail):
+    def get_template_name(self):
+        return 'show/showcontributor_detail.html'
+    
+    def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
+        return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
+    
+    def get_queryset(self, *args, **kwargs):
+        return ShowContributor.permitted.all()
+
+showcontributor_detail =  ShowContributorDetail()
+
+class ShowContributorContentDetail(GenericObjectDetail):
+    def get_template_name(self):
+        return 'show/showcontributor_content_detail.html'
+    
+    def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
+        return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
+    
+    def get_queryset(self, *args, **kwargs):
+        return ModelBase.permitted.all()
+    
+showcontributor_content_detail =  ShowContributorContentDetail()
