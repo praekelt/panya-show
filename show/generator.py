@@ -59,6 +59,12 @@ def generate():
                         "title": "Contributor %s Title" % i,
                         "state": "published",
                         "image": random.sample(IMAGES, 1)[0],
+                        "owner": {
+                            "model": "auth.user",
+                            "fields": {
+                                "username": "contributor%s" % i,
+                            }
+                        },
                         "sites": {
                             "model": "sites.Site",
                             "fields": { 
@@ -74,6 +80,21 @@ def generate():
                     }
                 },
             },
+        })
+                            
+                            
+        objects.append({
+            "model": "profile.Profile",
+            "fields": {
+                "user": {
+                    "model": "auth.User",
+                    "fields": {
+                        "username": "contributor%s" % i,
+                    }
+                },
+                "facebook_id": "12345",
+                "twitter_username": "12345"
+            }
         })
 
     # create some entries for shows
@@ -107,6 +128,31 @@ def generate():
                     },
                 },
             },
+        })
+
+
+    # create some content for each contributor
+    for i in range(1, (CREDIT_COUNT*10) + 1):
+        # create show
+        objects.append({
+            "model": "content.ModelBase",
+            "fields": {
+                "title": "Content %s Title" % i,
+                "description": "Content %s Title" % i,
+                "state": "published",
+                "owner": {
+                    "model": "auth.user",
+                    "fields": {
+                        "username": "contributor%s" % ((i % CREDIT_COUNT) + 1),
+                    }
+                },
+                "sites": {
+                    "model": "sites.Site",
+                    "fields": { 
+                        "name": "example.com"
+                    }
+                },
+            }
         })
     
     load_json(objects)
