@@ -140,6 +140,7 @@ def generate():
                 "title": "Content %s Title" % i,
                 "description": "Content %s Title" % i,
                 "state": "published",
+                "image": random.sample(IMAGES, 1)[0],
                 "owner": {
                     "model": "auth.user",
                     "fields": {
