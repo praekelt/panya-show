@@ -88,8 +88,8 @@ class ShowOptions(Options):
     __module__ = 'options.models'
 
     class Meta():
-        verbose_name = 'Show Options'
-        verbose_name_plural = 'Show Options'
+        verbose_name = 'Show options'
+        verbose_name_plural = 'Show options'
 
 class CreditOption(models.Model):
     show_options = models.ForeignKey('options.ShowOptions')
