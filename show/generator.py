@@ -58,6 +58,7 @@ def generate():
                     "fields": {
                         "title": "Contributor %s Title" % i,
                         "state": "published",
+                        "profile": "<strong>strong</strong><i>italic</i>",
                         "image": random.sample(IMAGES, 1)[0],
                         "owner": {
                             "model": "auth.user",
