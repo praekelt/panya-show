@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load show_inclusion_tags content_inclusion_tags pagemenu_inclusion_tags event_inclusion_tags %} 
+
+{% block content %}
+	<div class="page section_shows_djs">
+		<div class="title">
+		    <h1><a href="javascript: void(0);">{{ title }}</a></h1>
+            {% showcontributor_header contributor %}
+		</div><!--/title-->
+
+        {% pagemenu pagemenu %}
+
+        {% event_entryitem_listing object_list %}
+
+        {% pager page_obj %}
+
+	</div><!--/page-->
+{% endblock %}
