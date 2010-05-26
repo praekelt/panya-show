@@ -4,6 +4,7 @@ from cal.models import EntryItem
 from cal.pagemenus import EntriesByWeekdaysPageMenu
 from content.generic.views import GenericObjectDetail, GenericObjectList
 from content.models import ModelBase
+from event.models import Appearance, Event
 from show.models import RadioShow, ShowContributor
 from show.pagemenus import ShowContributorPageMenu
 
@@ -113,3 +114,41 @@ class ShowContributorContentDetail(GenericObjectDetail):
         return extra_context
     
 showcontributor_content_detail =  ShowContributorContentDetail()
+
+class ShowContributorAppearanceList(GenericObjectList):
+    def get_extra_context(self, slug, *args, **kwargs):
+        extra_context = super(ShowContributorAppearanceList, self).get_extra_context(*args, **kwargs)
+        added_context = {
+            'title': 'DJS & Shows',
+            'contributor': ShowContributor.permitted.get(slug=slug)
+        }
+        if extra_context:
+            extra_context.update(
+                added_context,
+            )
+        else:
+            extra_context = added_context
+
+        return extra_context
+   
+    def get_template_name(self):
+        return 'show/showcontributor_appearance_list.html'
+    
+    def get_url_callable(self):
+        return None
+    
+    def get_pagemenu(self, request, queryset, slug, *args, **kwargs):
+        return ShowContributorPageMenu(queryset=queryset, request=request, slug=slug)
+    
+    def get_paginate_by(self):
+        return 7
+
+    def get_queryset(self, slug):
+        contributor = ShowContributor.permitted.get(slug=slug)
+        if contributor:
+            return EntryItem.permitted.by_model(Event).filter(
+                content__in=Event.objects.filter(appearances__show_contributor=contributor)
+            ).order_by('start')
+        return []
+    
+showcontributor_appearance_list = ShowContributorAppearanceList()
