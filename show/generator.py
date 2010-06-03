@@ -83,21 +83,6 @@ def generate():
             },
         })
                             
-                            
-        objects.append({
-            "model": "profile.Profile",
-            "fields": {
-                "user": {
-                    "model": "auth.User",
-                    "fields": {
-                        "username": "contributor%s" % i,
-                    }
-                },
-                "facebook_id": "12345",
-                "twitter_username": "12345"
-            }
-        })
-
     # create some entries for shows
     for i in range(0, 24, 4):
         start_hour = i
@@ -130,7 +115,6 @@ def generate():
                 },
             },
         })
-
 
     # create some content for each contributor
     for i in range(1, (CREDIT_COUNT*10) + 1):
