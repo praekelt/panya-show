@@ -3,8 +3,9 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 from ckeditor.fields import RichTextField
-from content.models import ModelBase
-from options.models import Options
+from event.models import Event
+from panya.models import ModelBase
+from preferences.models import Preferences
 
 # Content Models
 class ShowContributor(ModelBase):
@@ -102,4 +103,14 @@ class CreditOption(models.Model):
         blank=True,
         null=True,
         help_text="The priority assigned to this role, with lower values being more importent.",
+    )
+
+class Appearance(models.Model):
+    event = models.ForeignKey(
+        Event,
+        related_name='appearances'
+    )
+    show_contributor = models.ForeignKey(
+        ShowContributor,
+        related_name='appearances'
     )
