@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib import admin
 
-from content.admin import ModelBaseAdmin
-from options import options
-from show.models import Credit, CreditOption, RadioShow, ShowContributor, ShowOptions
+from panya.admin import ModelBaseAdmin
+from preferences import preferences
+from show.models import Appearance, Credit, CreditOption, RadioShow, ShowContributor, ShowOptions
 
 class CreditOptionInline(admin.TabularInline):
     model = CreditOption
@@ -40,7 +40,15 @@ class RadioShowAdmin(ModelBaseAdmin):
     inlines = (
         CreditInline, 
     )
+
+class AppearanceInline(admin.TabularInline):
+    model = Appearance
+
+class ShowContributorAdmin(ModelBaseAdmin):
+    inlines = (
+        AppearanceInline, 
+    )
     
 admin.site.register(RadioShow, RadioShowAdmin)
-admin.site.register(ShowContributor, ModelBaseAdmin)
+admin.site.register(ShowContributor, ShowContributorAdmin)
 admin.site.register(ShowOptions, ShowOptionsAdmin)
