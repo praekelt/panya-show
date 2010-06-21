@@ -2,10 +2,10 @@ from django.core.urlresolvers import reverse
 
 from cal.models import EntryItem
 from cal.pagemenus import EntriesByWeekdaysPageMenu
-from content.generic.views import GenericObjectDetail, GenericObjectList
-from content.models import ModelBase
-from event.models import Appearance, Event
-from show.models import RadioShow, ShowContributor
+from panya.generic.views import GenericObjectDetail, GenericObjectList
+from panya.models import ModelBase
+from event.models import Event
+from show.models import Appearance, RadioShow, ShowContributor
 from show.pagemenus import ShowContributorPageMenu
 
 class ShowContributerContentURL(object):
