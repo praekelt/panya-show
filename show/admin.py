@@ -3,12 +3,12 @@ from django.contrib import admin
 
 from panya.admin import ModelBaseAdmin
 from preferences import preferences
-from show.models import Appearance, Credit, CreditOption, RadioShow, ShowContributor, ShowOptions
+from show.models import Appearance, Credit, CreditOption, RadioShow, ShowContributor, ShowPreferences
 
 class CreditOptionInline(admin.TabularInline):
     model = CreditOption
 
-class ShowOptionsAdmin(admin.ModelAdmin):
+class ShowPreferencesAdmin(admin.ModelAdmin):
     inlines = [
         CreditOptionInline,
     ]
@@ -25,7 +25,7 @@ class CreditInlineAdminForm(forms.ModelForm):
         Set role choices to credit options
         """
         role_choices = []
-        credit_options = options.ShowOptions.creditoption_set.all()
+        credit_options = preferences.ShowPreferences.creditoption_set.all()
         for credit_option in credit_options:
             role_choices.append((credit_option.role_priority, credit_option.role_name))
 
@@ -51,4 +51,4 @@ class ShowContributorAdmin(ModelBaseAdmin):
     
 admin.site.register(RadioShow, RadioShowAdmin)
 admin.site.register(ShowContributor, ShowContributorAdmin)
-admin.site.register(ShowOptions, ShowOptionsAdmin)
+admin.site.register(ShowPreferences, ShowPreferencesAdmin)

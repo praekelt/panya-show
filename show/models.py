@@ -84,16 +84,16 @@ class Show(ModelBase):
 class RadioShow(Show):
     pass
 
-# Option Models
-class ShowOptions(Options):
-    __module__ = 'options.models'
+# Preferences Models
+class ShowPreferences(Preferences):
+    __module__ = 'preferences.models'
 
     class Meta():
-        verbose_name = 'Show options'
-        verbose_name_plural = 'Show options'
+        verbose_name = 'Show preferences'
+        verbose_name_plural = 'Show preferences'
 
 class CreditOption(models.Model):
-    show_options = models.ForeignKey('options.ShowOptions')
+    show_preferences = models.ForeignKey('preferences.ShowPreferences')
     role_name = models.CharField(
         max_length=256,
         blank=True,
