@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load show_inclusion_tags pagemenu_inclusion_tags %} 
+{% load show_inclusion_tags panya_inclusion_tags %} 
 
 {% block content %}
 	<div class="page section_shows_djs">
@@ -8,7 +8,7 @@
             {% showcontributor_header object %}
 		</div><!--/title-->
 
-        {% pagemenu pagemenu %}
+        {% view_modifier view_modifier %}
 
         {% showcontributor_detail object %}
 

@@ -2,6 +2,6 @@
 
 {% for object in object_list %}
     {% with object as entryitem %}
-        {% render_object object.content.as_leaf_class entryitem_list_block %}
+        {% render_object object.content.as_leaf_class "entryitem_list_block" %}
     {% endwith %}
 {% endfor %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load pagemenu_inclusion_tags show_inclusion_tags panya_inclusion_tags gallery_inclusion_tags %} 
+{% load show_inclusion_tags panya_inclusion_tags gallery_inclusion_tags %} 
 
 {% block content %}
     <div class="page section_shows_djs">
@@ -8,12 +8,12 @@
             {% showcontributor_header contributor %}
 		</div><!--/title-->
             
-        {% pagemenu pagemenu %}
+        {% view_modifier view_modifier %}
         
         {% object_header object %}
       
         {% with object.as_leaf_class as object %}
-            {% render_object object.as_leaf_class detail %}
+            {% render_object object.as_leaf_class "detail" %}
         {% endwith %}
 
         {% object_comments object %}
