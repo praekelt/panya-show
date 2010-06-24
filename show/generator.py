@@ -33,13 +33,14 @@ def generate():
             },
         })
 
-    # create credit options
+    # create credit preferences
     for option in CREDIT_OPTIONS:
         objects.append({
             "model": "show.CreditOption",
             "fields": {
-                "show_options": {
-                    "model": "options.ShowOptions",
+                "show_preferences": {
+                    "model": "preferences.ShowPreferences",
+                    "fields": {},
                 },
                 "role_name" : option[1],
                 "role_priority": option[0],
@@ -120,7 +121,7 @@ def generate():
     for i in range(1, (CREDIT_COUNT*10) + 1):
         # create show
         objects.append({
-            "model": "content.ModelBase",
+            "model": "panya.ModelBase",
             "fields": {
                 "title": "Content %s Title" % i,
                 "description": "Content %s Title" % i,
