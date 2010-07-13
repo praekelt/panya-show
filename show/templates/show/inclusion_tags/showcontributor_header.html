@@ -1,6 +1,6 @@
 <div class="dj_info">
     <img src="{{ object.get_showcontributor_medium_url }}" width="190" height="107" alt="" />
-	<h2> </h2>{% comment %}<h2>On Air: Weekdays: 16:00 - 19:00</h2>{% endcomment %}
+	<h2>{% if entries %}On Air: {% for entry in entries %}{{ entry.repeat }}: {{ entry.start|date:"H:i" }} - {{ entry.end|date:"H:i" }}{% if not forloop.last %} | {% endif %}{% endfor %}{% else %}&nbsp;{% endif %}</h2>
 	<h3>{{ object.title }}</h3>
     {% with object.owner.profile as profile %}
         <ul>
