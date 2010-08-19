@@ -2,11 +2,13 @@ from django.core.urlresolvers import reverse
 
 from cal.models import EntryItem
 from cal.view_modifiers import EntriesByWeekdaysViewModifier
-from panya.generic.views import GenericObjectDetail, GenericObjectList
+from panya.generic.views import GenericObjectDetail, GenericObjectList, GenericForm
 from panya.models import ModelBase
 from event.models import Event
 from show.models import Appearance, RadioShow, ShowContributor
 from show.view_modifiers import ShowContributorViewModifier
+
+from metrofm.forms import ShowContributorContactForm
 
 class ShowContributerContentURL(object):
     def __call__(self, obj=None):
@@ -104,7 +106,7 @@ class ShowContributorAppearanceList(GenericObjectList):
             'title': 'DJS & Shows',
             'contributor': ShowContributor.permitted.get(slug=slug)
         }
-   
+    
     def get_template_name(self, *args, **kwargs):
         return 'show/showcontributor_appearance_list.html'
     
@@ -124,3 +126,32 @@ class ShowContributorAppearanceList(GenericObjectList):
         return []
     
 showcontributor_appearance_list = ShowContributorAppearanceList()
+
+class ShowContributorContact(GenericForm):
+    def get_extra_context(self, *args, **kwargs):
+        return {
+            'title': 'DJS & Shows',
+            'contributor': ShowContributor.permitted.get(slug=kwargs.get('slug'))
+        }
+
+    def get_form_args(self, *args, **kwargs):
+        return {
+            'contributor': self.get_extra_context(slug=kwargs['slug']).get('contributor', None),
+        }
+    
+    def get_form_class(self, *args, **kwargs):
+        return ShowContributorContactForm
+    
+    def get_initial(self, *args, **kwargs):
+        pass
+    
+    def get_success_message(self, *args, **kwargs):
+        return "Your profile has been updated."
+
+    def get_template_name(self, *args, **kwargs):
+        return "show/showcontributor_contact.html"
+    
+    def get_view_modifier(self, request, slug, *args, **kwargs):
+        return ShowContributorViewModifier(request=request, slug=slug, *args, **kwargs)
+    
+showcontributor_contact = ShowContributorContact()
