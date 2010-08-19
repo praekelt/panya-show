@@ -7,4 +7,5 @@ urlpatterns = patterns(
     url(r'^showcontributor/appearance/(?P<slug>[\w-]+)/$', 'showcontributor_appearance_list', name='showcontributor_appearance_list'),
     url(r'^showcontributor/(?P<slug>[\w-]+)/$', 'showcontributor_detail', name='showcontributor_detail'),
     url(r'^showcontributor/content/(?P<slug>[\w-]+)/$', 'showcontributor_content_detail', name='showcontributor_content_detail'),
+    url(r'^showcontributor/contact/(?P<slug>[\w-]+)/$', 'showcontributor_contact', name='showcontributor_contact'),
 )
