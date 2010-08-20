@@ -10,7 +10,47 @@
 
         {% view_modifier view_modifier %}
 		
-		{{ form }}
+		<form id="frmDJContact" method="post" action="">
+			{% csrf_token %}
+			<div class="page_form_row">
+				<label>Name:</label>
+				{% if form.first_name.errors.0 %}<label class="red">{{ form.first_name.errors.0 }}</label>{% endif %}
+				<p class="text_input_short shift">{{ form.first_name }}</p>
+				{% if form.last_name.errors.0 %}<label class="red">{{ form.last_name.errors.0 }}</label>{% endif %}
+				<p class="text_input_short shift no-marg">{{ form.last_name }}</p>
+				<p class="note">(First and Last Name)</p>
+			</div>
+			<p class="clearfix"></p>
+			
+			<div class="page_form_row">
+				<label for="id_{{ form.email.name }}">Email:</label>
+				{% if form.email.errors.0 %}<label class="red">{{ form.email.errors.0 }}</label>{% endif %}
+				<p class="text_input shift">{{ form.email }}</p>
+				<p class="note">(We will send you account notices here - so make sure its good.)</p>
+			</div>
+			<p class="clearfix"></p>
+			
+			<div class="page_form_row">
+				<label for="id_{{ form.message.name }}">Message:</label>
+				{% if form.message.errors.0 %}<label class="red">{{ form.message.errors.0 }}</label>{% endif %}
+				<p class="text_area_short shift_half">{{ form.message }}</p>
+			</div>
+			
+			<div class="page_form_row" style="display:none">
+				<label for="id_{{ form.message.name }}">State:</label>
+				{% if form.state.errors.0 %}<label class="red">{{ form.state.errors.0 }}</label>{% endif %}
+				<p class="text_area_short shift_half">{{ form.state }}</p>
+			</div>
+			
+			<p class="clearfix"></p>
+			
+			<p class="clearfix"></p>
+			<div class="page_form_row no-pad">
+				<p class="label">&nbsp;</p>
+				<p class="btn"><input type="image" src="{{ MEDIA_URL }}metrofm/images/forms/btn-send_message.jpg" name="submit" onclick="validateDJContact();" /></p>
+			</div>
+			<p class="clearfix"></p>
+		</form>
 
 	</div><!--/page-->
 {% endblock %}
