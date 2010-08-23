@@ -23,9 +23,7 @@ class ShowContributorContactForm(forms.Form):
         widget=forms.Textarea(attrs={'class':'required'}),
         error_messages={'required': 'Please enter your message.'}
     )
-    
-    # honeypot field
-    state = forms.CharField(
+    honeypot = forms.CharField(
         max_length=50,
         required=False,
     )
@@ -37,7 +35,7 @@ class ShowContributorContactForm(forms.Form):
     def is_valid(self, *args, **kwargs):
         is_valid = super(ShowContributorContactForm, self).is_valid(*args, **kwargs)
         if is_valid:
-            if not self.cleaned_data['state']:
+            if not self.cleaned_data['honeypot']:
                 return True
     
     def handle_valid(self, contributor, *args, **kwargs):
@@ -48,7 +46,7 @@ class ShowContributorContactForm(forms.Form):
             subject = "Email from website."
             message = "%s sent you a message from the website:\r\n\r\n" % self.cleaned_data.get('first_name')
             for key, val in self.cleaned_data.iteritems():
-                 if key != "state":
+                 if key != "honeypot":
                     message += "%s: %s\r\n" % (key.title().replace("_", " "), val)
             from_email = self.cleaned_data.get('email')
             to_email = [contributor.owner.email]
