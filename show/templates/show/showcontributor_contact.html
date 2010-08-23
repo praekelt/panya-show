@@ -37,9 +37,8 @@
 			</div>
 			
 			<div class="page_form_row" style="display:none">
-				<label for="id_{{ form.message.name }}">State:</label>
-				{% if form.state.errors.0 %}<label class="red">{{ form.state.errors.0 }}</label>{% endif %}
-				<p class="text_area_short shift_half">{{ form.state }}</p>
+				<label for="id_{{ form.honeypot.name }}">Honeypot:</label>
+				<p class="text_area_short shift_half">{{ form.honeypot }}</p>
 			</div>
 			
 			<p class="clearfix"></p>
